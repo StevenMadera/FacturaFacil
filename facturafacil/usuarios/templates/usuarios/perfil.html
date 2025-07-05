@@ -1,0 +1,88 @@
+{% extends 'usuarios/base.html' %}
+
+{% block title %}Perfil - Factura Fácil{% endblock %}
+
+{% block content %}
+<div class="container mt-5">
+    <div class="row">
+        <div class="col-md-4">
+            <div class="card">
+                <div class="card-header bg-primary text-white">
+                    <h4 class="mb-0">Información del Comercio</h4>
+                </div>
+                <div class="card-body">
+                    <div class="text-center mb-4">
+                        <div class="bg-primary text-white rounded-circle d-flex align-items-center justify-content-center" style="width: 100px; height: 100px; margin: 0 auto; font-size: 2.5rem;">
+                            {{ user.razon_social|first|upper }}
+                        </div>
+                        <h4 class="mt-3">{{ user.razon_social }}</h4>
+                        <p class="text-muted">NIT: {{ user.nit }}</p>
+                    </div>
+                    
+                    <ul class="list-group list-group-flush">
+                        <li class="list-group-item">
+                            <strong><i class="fas fa-envelope me-2"></i> Email:</strong> {{ user.email }}
+                        </li>
+                        <li class="list-group-item">
+                            <strong><i class="fas fa-phone me-2"></i> Teléfono:</strong> {{ user.telefono }}
+                        </li>
+                        <li class="list-group-item">
+                            <strong><i class="fas fa-map-marker-alt me-2"></i> Dirección:</strong> {{ user.direccion_establecimiento }}
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        
+        <div class="col-md-8">
+            <div class="card">
+                <div class="card-header bg-primary text-white">
+                    <h4 class="mb-0">Detalles Tributarios</h4>
+                </div>
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <p><strong>Régimen Tributario:</strong><br>
+                            {{ user.get_regimen_tributario_display }}</p>
+                            
+                            <p><strong>Responsabilidad Tributaria:</strong><br>
+                            {{ user.get_responsabilidad_tributaria_display }}</p>
+                        </div>
+                        <div class="col-md-6">
+                            <p><strong>Representante Legal:</strong><br>
+                            {{ user.nombre_representante_legal }}</p>
+                            
+                            <p><strong>Agente Retenedor de IVA:</strong><br>
+                            {% if user.agente_retenedor_iva %}
+                                <span class="badge bg-success">Sí</span>
+                            {% else %}
+                                <span class="badge bg-secondary">No</span>
+                            {% endif %}</p>
+                        </div>
+                    </div>
+                    
+                    <hr>
+                    
+                    <div class="d-flex justify-content-between">
+                        <a href="#" class="btn btn-outline-primary">
+                            <i class="fas fa-edit me-2"></i> Editar Perfil
+                        </a>
+                        <a href="#" class="btn btn-outline-secondary">
+                            <i class="fas fa-lock me-2"></i> Cambiar Contraseña
+                        </a>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="card mt-4">
+                <div class="card-header bg-primary text-white">
+                    <h4 class="mb-0">Actividad Reciente</h4>
+                </div>
+                <div class="card-body">
+                    <p class="text-muted">Aquí irá el historial de facturas y actividades recientes...</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

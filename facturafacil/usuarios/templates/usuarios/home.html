@@ -1,0 +1,148 @@
+{% extends 'usuarios/base.html' %}
+
+{% block title %}Factura Fácil - Sistema de Facturación Electrónica{% endblock %}
+
+{% block content %}
+<div class="container-fluid px-0">
+    
+    <div class="hero-section bg-primary text-white py-5">
+        <div class="container py-5">
+            <div class="row align-items-center">
+                <div class="col-lg-6">
+                    <h1 class="display-4 fw-bold mb-4">
+                        {% if user.is_authenticated %}
+                            Bienvenido, {{ user.razon_social }}
+                        {% else %}
+                            Facturación Electrónica Simple y Segura
+                        {% endif %}
+                    </h1>
+                    <p class="lead mb-4">
+                        Factura Fácil te permite generar, gestionar y enviar facturas electrónicas 
+                        de manera rápida y conforme a la normativa tributaria.
+                    </p>
+                    <div class="d-flex gap-3">
+                        {% if user.is_authenticated %}
+                            <a href="#" class="btn btn-light btn-lg px-4">
+                                <i class="fas fa-file-invoice me-2"></i> Crear Factura
+                            </a>
+                            <a href="{% url 'usuarios:perfil' %}" class="btn btn-outline-light btn-lg px-4">
+                                <i class="fas fa-user-cog me-2"></i> Mi Perfil
+                            </a>
+                        {% else %}
+                            <a href="{% url 'usuarios:registro' %}" class="btn btn-light btn-lg px-4">
+                                <i class="fas fa-user-plus me-2"></i> Regístrate Gratis
+                            </a>
+                            <a href="{% url 'usuarios:login' %}" class="btn btn-outline-light btn-lg px-4">
+                                <i class="fas fa-sign-in-alt me-2"></i> Iniciar Sesión
+                            </a>
+                        {% endif %}
+                    </div>
+                </div>
+                <div class="col-lg-6 d-none d-lg-block">
+                    <img src="https://via.placeholder.com/600x400" alt="Facturación electrónica" class="img-fluid rounded shadow">
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="container py-5">
+        <div class="text-center mb-5">
+            <h2 class="fw-bold">¿Por qué elegir Factura Fácil?</h2>
+            <p class="text-muted">La solución completa para la gestión de facturas electrónicas</p>
+        </div>
+        
+        <div class="row g-4">
+            <div class="col-md-4">
+                <div class="card h-100 border-0 shadow-sm">
+                    <div class="card-body text-center p-4">
+                        <div class="bg-primary bg-opacity-10 text-primary rounded-circle p-3 mb-3 mx-auto" style="width: 60px; height: 60px;">
+                            <i class="fas fa-bolt fs-4"></i>
+                        </div>
+                        <h5 class="card-title">Rápido y Simple</h5>
+                        <p class="card-text text-muted">
+                            Crea facturas en minutos con nuestra interfaz intuitiva y plantillas preconfiguradas.
+                        </p>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="col-md-4">
+                <div class="card h-100 border-0 shadow-sm">
+                    <div class="card-body text-center p-4">
+                        <div class="bg-primary bg-opacity-10 text-primary rounded-circle p-3 mb-3 mx-auto" style="width: 60px; height: 60px;">
+                            <i class="fas fa-shield-alt fs-4"></i>
+                        </div>
+                        <h5 class="card-title">100% Normativo</h5>
+                        <p class="card-text text-muted">
+                            Cumple con todas las regulaciones tributarias y evita sanciones o multas.
+                        </p>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="col-md-4">
+                <div class="card h-100 border-0 shadow-sm">
+                    <div class="card-body text-center p-4">
+                        <div class="bg-primary bg-opacity-10 text-primary rounded-circle p-3 mb-3 mx-auto" style="width: 60px; height: 60px;">
+                            <i class="fas fa-cloud fs-4"></i>
+                        </div>
+                        <h5 class="card-title">Acceso en la Nube</h5>
+                        <p class="card-text text-muted">
+                            Gestiona tus facturas desde cualquier dispositivo con acceso a internet.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    {% if not user.is_authenticated %}
+    <div class="bg-light py-5">
+        <div class="container text-center py-4">
+            <h2 class="fw-bold mb-4">¿Listo para comenzar?</h2>
+            <p class="lead mb-4">Regístrate ahora y empieza a facturar en minutos</p>
+            <a href="{% url 'usuarios:registro' %}" class="btn btn-primary btn-lg px-5">
+                <i class="fas fa-rocket me-2"></i> Crear Cuenta Gratis
+            </a>
+        </div>
+    </div>
+    {% endif %}
+
+    {% if user.is_authenticated %}
+    <div class="container py-5">
+        <h2 class="fw-bold mb-4">Tus Facturas Recientes</h2>
+        <div class="card shadow-sm">
+            <div class="card-body">
+                <div class="table-responsive">
+                    <table class="table table-hover">
+                        <thead>
+                            <tr>
+                                <th>Número</th>
+                                <th>Cliente</th>
+                                <th>Fecha</th>
+                                <th>Total</th>
+                                <th>Estado</th>
+                                <th>Acciones</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td colspan="6" class="text-center py-5">
+                                    <i class="fas fa-file-invoice fs-1 text-muted mb-3"></i>
+                                    <p class="text-muted">Aún no has creado facturas</p>
+                                    <a href="#" class="btn btn-primary">
+                                        <i class="fas fa-plus me-2"></i> Crear Primera Factura
+                                    </a>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+    {% endif %}
+</div>
+
+
+{% endblock %}
