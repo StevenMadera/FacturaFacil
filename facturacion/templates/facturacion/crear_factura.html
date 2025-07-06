@@ -1,0 +1,69 @@
+{% extends 'facturacion/base_facturacion.html' %}
+{% load crispy_forms_tags %}
+
+{% block facturacion_content %}
+<h2>Crear Nueva Factura</h2>
+<form method="post" id="factura-form">
+    {% csrf_token %}
+    
+  
+    {{ cliente_form|crispy }}
+    
+    
+    <h4>Productos/Servicios</h4>
+    {{ detalle_formset.management_form }}
+    
+    <div id="productos-container">
+        {% for form in detalle_formset %}
+        <div class="producto-form mb-4 p-3 border rounded">
+            {{ form|crispy }}
+        </div>
+        {% endfor %}
+    </div>
+    
+    <button type="button" id="add-producto" class="btn btn-outline-primary btn-sm">
+        <i class="fas fa-plus"></i> Añadir otro producto
+    </button>
+    
+    <div class="mt-4">
+        <button type="submit" class="btn btn-primary">
+            <i class="fas fa-save"></i> Generar Factura
+        </button>
+        <a href="{% url 'facturacion:lista_facturas' %}" class="btn btn-secondary">
+            <i class="fas fa-times"></i> Cancelar
+        </a>
+    </div>
+</form>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    
+    const container = document.getElementById('productos-container');
+    const addButton = document.getElementById('add-producto');
+    const totalForms = document.getElementById('id_detalles-TOTAL_FORMS');
+    const emptyForm = document.querySelector('.producto-form').cloneNode(true);
+    
+   
+    Array.from(emptyForm.querySelectorAll('input, select')).forEach(input => {
+        if (input.name) input.value = '';
+        if (input.type === 'hidden') input.value = '0';
+    });
+    
+    addButton.addEventListener('click', function() {
+        const newForm = emptyForm.cloneNode(true);
+        const formIdx = parseInt(totalForms.value);
+        
+        
+        Array.from(newForm.querySelectorAll('input, select')).forEach(input => {
+            if (input.name) {
+                input.name = input.name.replace('-0-', `-${formIdx}-`);
+                input.id = `id_${input.name}`;
+            }
+        });
+        
+        container.appendChild(newForm);
+        totalForms.value = formIdx + 1;
+    });
+});
+</script>
+{% endblock %}
