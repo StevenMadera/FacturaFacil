@@ -1,0 +1,16 @@
+{% extends 'productos/base_productos.html' %}
+{% load crispy_forms_tags %}
+
+{% block productos_content %}
+<h2>Nuevo Producto</h2>
+<form method="post">
+    {% csrf_token %}
+    {{ form|crispy }}
+    <button type="submit" class="btn btn-success">
+        <i class="fas fa-save"></i> Guardar
+    </button>
+    <a href="{% url 'productos:lista' %}" class="btn btn-secondary">
+        <i class="fas fa-times"></i> Cancelar
+    </a>
+</form>
+{% endblock %}

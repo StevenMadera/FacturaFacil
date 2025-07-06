@@ -1,0 +1,35 @@
+{% extends 'productos/base_productos.html' %}
+
+{% block productos_content %}
+<h2>Tus Productos</h2>
+<a href="{% url 'productos:nuevo' %}" class="btn btn-primary mb-3">
+    <i class="fas fa-plus"></i> Nuevo Producto
+</a>
+
+{% if productos %}
+<table class="table table-striped">
+    <thead>
+        <tr>
+            <th>Código</th>
+            <th>Nombre</th>
+            <th>Precio</th>
+            <th>Impuesto</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for producto in productos %}
+        <tr>
+            <td>{{ producto.codigo }}</td>
+            <td>{{ producto.nombre }}</td>
+            <td>${{ producto.precio }}</td>
+            <td>{{ producto.impuesto }}%</td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+{% else %}
+<div class="alert alert-info">
+    No tienes productos registrados. <a href="{% url 'productos:nuevo' %}">Crea tu primer producto</a>.
+</div>
+{% endif %}
+{% endblock %}
