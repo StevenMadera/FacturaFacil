@@ -2,65 +2,117 @@
 <html lang="es">
 <head>
     <meta charset="UTF-8">
-    <title>Factura #{{ factura.numero }}</title>
-    <style>
-        body { font-family: Arial, sans-serif; font-size: 13px; }
-        .header { background: #0d6efd; color: #fff; padding: 10px; }
-        .datos { margin-bottom: 20px; }
-        .tabla { width: 100%; border-collapse: collapse; margin-bottom: 20px; }
-        .tabla th, .tabla td { border: 1px solid #ccc; padding: 6px; text-align: left; }
-        .tabla th { background: #f2f2f2; }
-        .totales { float: right; width: 250px; }
-        .totales td { padding: 4px; }
-    </style>
+    <title>Factura Electrónica #{{ factura.numero }}</title>
+    {% load static %}
+<link rel="stylesheet" href="{% static 'css/styles_factura.css' %}">
 </head>
 <body>
     <div class="header">
-        <h2>Factura Electrónica #{{ factura.numero }}</h2>
+        <div class="header-empresa">
+            <div>
+                <h1 class="mb-0">{{ empresa.razon_social|default:"-" }}</h1>
+                <p class="mb-0">NIT: {{ empresa.nit|default:"-" }}</p>
+                <p class="mb-0">Dirección: {{ empresa.direccion_establecimiento|default:"-" }}</p>
+                <p class="mb-0">Tel: {{ empresa.telefono|default:"-" }} | Email: {{ empresa.email|default:"-" }}</p>
+                <p class="mb-0">Régimen: {{ empresa.regimen_tributario|default:"-" }}</p>
+            </div>
+            <div class="text-right">
+                <p class="bold mb-0">Factura Electrónica</p>
+                <p class="bold mb-0">No. {{ factura.numero }}</p>
+                <p class="mb-0">Fecha: {{ factura.fecha|date:"d/m/Y" }}</p>
+                <p class="mb-0">CUF: {{ factura.cuf|default:"-" }}</p>
+            </div>
+        </div>
     </div>
-    <div class="datos">
-        <strong>Cliente:</strong> {{ factura.cliente.nombre }}<br>
-        <strong>Dirección:</strong> {{ factura.cliente.direccion }}<br>
-        <strong>Correo:</strong> {{ factura.cliente.email }}<br>
-        <strong>Teléfono:</strong> {{ factura.cliente.telefono }}<br>
-        <strong>Fecha de emisión:</strong> {{ factura.fecha|date:"d/m/Y" }}<br>
-        <strong>Estado:</strong> {% if factura.pagada %}Pagada{% else %}Pendiente{% endif %}<br>
+
+    <div class="datos-factura">
+        <div class="datos-cliente">
+            <h3>Datos del Cliente</h3>
+            <p class="bold mb-0">{{ factura.cliente.nombre }}</p>
+            <p class="mb-0">NIT/CI: {{ factura.cliente.identificacion|default:"-" }}</p>
+            <p class="mb-0">Dirección: {{ factura.cliente.direccion }}</p>
+            <p class="mb-0">Teléfono: {{ factura.cliente.telefono|default:"-" }}</p>
+            <p class="mb-0">Email: {{ factura.cliente.email|default:"-" }}</p>
+        </div>
+        
+        <div class="datos-empresa">
+            <h3>Datos de Facturación</h3>
+            <p class="mb-0"><span class="bold">Estado:</span> 
+                {% if factura.estado == 'enviada' %}
+                    Enviada
+                {% elif factura.estado == 'emitida' %}
+                    Emitida
+                {% else %}
+                    Borrador
+                {% endif %}
+                {% if factura.pagada %}
+                    <span class="bold"> | Pagada</span>
+                {% endif %}
+            </p>
+            <p class="mb-0"><span class="bold">Fecha Vencimiento:</span> {{ factura.fecha_vencimiento|date:"d/m/Y"|default:"31/12/2025" }}</p>
+            <p class="mb-0"><span class="bold">Método Pago:</span> {{ factura.metodo_pago|default:"-" }}</p>
+            <p class="mb-0"><span class="bold">Leyenda:</span> "Factura electrónica según normativa vigente"</p>
+        </div>
     </div>
-    <table class="tabla">
+
+    <table class="tabla-productos">
         <thead>
             <tr>
-                <th>Producto</th>
+                <th>Código</th>
+                <th>Descripción</th>
                 <th>Cantidad</th>
                 <th>Precio Unitario</th>
-                <th>Impuesto (%)</th>
+                <th>Descuento</th>
                 <th>Subtotal</th>
             </tr>
         </thead>
         <tbody>
             {% for d in detalles %}
             <tr>
+                <td>{{ d.producto.codigo|default:"-" }}</td>
                 <td>{{ d.producto.nombre }}</td>
                 <td>{{ d.cantidad }}</td>
-                <td>${{ d.precio_unitario|floatformat:2 }}</td>
-                <td>{{ d.impuesto|floatformat:2 }}%</td>
-                <td>${{ d.subtotal|floatformat:2 }}</td>
+                <td class="text-right">${{ d.precio_unitario|floatformat:2 }}</td>
+                <td class="text-right">${{ d.descuento|floatformat:2|default:"0.00" }}</td>
+                <td class="text-right">${{ d.subtotal|floatformat:2 }}</td>
             </tr>
             {% endfor %}
         </tbody>
     </table>
+
     <table class="totales">
         <tr>
-            <td><strong>Subtotal</strong></td>
-            <td>${{ factura.subtotal|floatformat:2 }}</td>
+            <td>Subtotal:</td>
+            <td class="text-right">${{ factura.subtotal|floatformat:2 }}</td>
         </tr>
         <tr>
-            <td><strong>Impuestos</strong></td>
-            <td>${{ factura.impuestos|floatformat:2 }}</td>
+            <td>Descuentos:</td>
+            <td class="text-right">${{ factura.descuentos|floatformat:2|default:"0.00" }}</td>
         </tr>
         <tr>
-            <td><strong>Total</strong></td>
-            <td><strong>${{ factura.total|floatformat:2 }}</strong></td>
+            <td>IVA ({{ impuesto|floatformat:2|default:"0.00" }}%):</td>
+            <td class="text-right">${{ factura.impuestos|floatformat:2|default:"0.00" }}</td>
+        </tr>
+        {% for impuesto in factura.impuestos_detalle %}
+        <tr>
+            <td>{{ impuesto.nombre }} ({{ impuesto.porcentaje }}%):</td>
+            <td class="text-right">${{ impuesto.valor|floatformat:2 }}</td>
+        </tr>
+        {% endfor %}
+        <tr>
+            <td>Total a Pagar:</td>
+            <td class="text-right">${{ factura.total|floatformat:2 }}</td>
         </tr>
     </table>
+
+    <div class="footer">
+        <div class="text-center mt-3">
+            <img src="https://api.qrserver.com/v1/create-qr-code/?size=100x100&data=FAKE-QR" class="qr-code" alt="Código QR Factura Falsa">
+            <p>Código de Control: {{ factura.codigo_control|default:"0120102392191" }}</p>
+            <p>Fecha límite de emisión: {{ factura.fecha_limite_emision|date:"d/m/Y"|default:"31/12/2025" }}</p>
+            <p>{{ empresa.razon_social }} - {{ empresa.direccion_establecimiento }} - Tel: {{ empresa.telefono }}</p>
+            <p>Esta factura electrónica es un documento legal según normativa vigente</p>
+        </div>
+    </div>
 </body>
 </html>

@@ -1,0 +1,17 @@
+/* lista */
+    .empty-state-icon {
+        width: 60px;
+        height: 60px;
+        border-radius: 50%;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 1.5rem;
+    }
+    
+/* Crear */
+
+ .form1 input {
+        margin-bottom: 20px;
+    }  
+  

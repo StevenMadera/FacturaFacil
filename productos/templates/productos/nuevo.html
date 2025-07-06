@@ -1,16 +1,52 @@
 {% extends 'productos/base_productos.html' %}
+{% block title %}Nuevo de Productos{% endblock %}
+
 {% load crispy_forms_tags %}
 
 {% block productos_content %}
-<h2>Nuevo Producto</h2>
-<form method="post">
+<div class="container">
+    <div class="row justify-content-center">
+        <div class="col-lg-8">
+            <div class="card shadow-sm border-0">
+                <div class="card-header  text-white py-3">
+                    <h2 class="mb-0"><i class="fas fa-cube me-2" style="color: #fff;"></i>Nuevo Producto</h2>
+                </div>
+                <div class="card-body p-4">
+                    <form method="post" class="form1">
     {% csrf_token %}
     {{ form|crispy }}
     <button type="submit" class="btn btn-success">
-        <i class="fas fa-save"></i> Guardar
+        <i class="fas fa-save" style="color: #fff;"></i> Guardar
     </button>
     <a href="{% url 'productos:lista' %}" class="btn btn-secondary">
-        <i class="fas fa-times"></i> Cancelar
+        <i class="fas fa-times" style="color: #fff;"></i> Cancelar
     </a>
 </form>
+                </div>
+            </div>
+            
+            <div class="card shadow-sm border-0 mt-4">
+                <div class="card-body p-4">
+                    <h5 class="mb-3 text-primary"><i class="fas fa-lightbulb me-2"></i>Consejos para crear productos</h5>
+                    <ul class="list-group list-group-flush tips-list">
+                        <li class="list-group-item border-0 ps-0">
+                            <i class="fas fa-check-circle text-success me-2"></i>
+                            Usa códigos únicos para cada producto
+                        </li>
+                        <li class="list-group-item border-0 ps-0">
+                            <i class="fas fa-check-circle text-success me-2"></i>
+                            El impuesto debe coincidir con tu régimen tributario
+                        </li>
+                        <li class="list-group-item border-0 ps-0">
+                            <i class="fas fa-check-circle text-success me-2"></i>
+                            Una descripción clara ayuda en tus facturas
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
 {% endblock %}

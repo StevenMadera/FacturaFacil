@@ -46,11 +46,12 @@ class RegistroForm(UserCreationForm):
     class Meta:
         model = Usuario
         fields = [
-            'username', 'email', 'password1', 'password2', 
-            'razon_social', 'nit', 'regimen_tributario',
-            'direccion_establecimiento', 'telefono', 
-            'nombre_representante_legal', 'responsabilidad_tributaria',
-            'agente_retenedor_iva', 'sitio_web', 'actividad_economica'
+            'username', 'email', 'telefono', 
+            'nit', 'nombre_representante_legal', 'razon_social',
+            'regimen_tributario', 'actividad_economica',
+            'responsabilidad_tributaria',
+            'agente_retenedor_iva', 'sitio_web', 'direccion_establecimiento', 
+            'password1', 'password2',
         ]
         widgets = {
             'username': forms.TextInput(attrs={'class': 'form-control', 'placeholder': _('Nombre de usuario')}),

@@ -3,6 +3,8 @@ from .models import Cliente
 from productos.models import Producto
 from .models import DetalleFactura
 
+
+
 class ClienteForm(forms.ModelForm):
     class Meta:
         model = Cliente
@@ -10,6 +12,19 @@ class ClienteForm(forms.ModelForm):
         widgets = {
             'direccion': forms.Textarea(attrs={'rows': 3}),
         }
+
+
+class FacturaPagoForm(forms.ModelForm):
+    class Meta:
+        from .models import Factura
+        model = Factura
+        fields = ['metodo_pago']
+        widgets = {
+            'metodo_pago': forms.Select(attrs={'class': 'form-control'}),
+        }
+
+
+
 
 class DetalleFacturaForm(forms.ModelForm):
     def __init__(self, *args, **kwargs):

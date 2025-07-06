@@ -1,0 +1,68 @@
+  /* lista */
+
+    .product-row:hover {
+        background-color: var(--light-blue);
+        cursor: pointer;
+    }
+    
+    .table-primary {
+        background-color: var(--light-blue);
+        color: var(--dark-blue);
+    }
+    
+    .bg-primary-light {
+        background-color: rgba(58, 141, 248, 0.1);
+    }
+    
+    .empty-state-icon {
+        width: 60px;
+        height: 60px;
+        border-radius: 50%;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 1.5rem;
+    }
+    
+    .table {
+        --bs-table-striped-bg: rgba(234, 242, 253, 0.3);
+        border-radius: 10px;
+        overflow: hidden;
+    }
+    
+    .table th {
+        font-weight: 600;
+        text-transform: uppercase;
+        font-size: 0.8rem;
+        letter-spacing: 0.5px;
+    }
+
+
+/* nuevo */
+    .form1 input {
+        margin-bottom: 20px;
+    }
+
+    .btn-success {
+        background-color: var(--primary-blue);
+        border-color: var(--dark-blue   );
+    }
+
+    .btn-success:hover {
+        background-color: var(--secondary-blue);
+        border-color: var(--light-blue);
+    }
+
+
+
+
+    @media (max-width: 768px) {
+        .form-actions {
+            flex-direction: column-reverse;
+            gap: 0.5rem;
+        }
+        
+        .form-actions .btn {
+            width: 100%;
+        }
+    }

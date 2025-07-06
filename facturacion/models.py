@@ -36,12 +36,21 @@ class Factura(models.Model):
     impuestos = models.DecimalField(_('Impuestos'), max_digits=12, decimal_places=2)
     total = models.DecimalField(_('Total'), max_digits=12, decimal_places=2)
     pagada = models.BooleanField(_('Pagada'), default=False)
+
     ESTADO_CHOICES = [
         ('borrador', _('Borrador')),
         ('emitida', _('Emitida')),
         ('enviada', _('Enviada')),
     ]
     estado = models.CharField(_('Estado de envío'), max_length=10, choices=ESTADO_CHOICES, default='emitida')
+
+    METODO_PAGO_CHOICES = [
+        ('efectivo', _('Efectivo')),
+        ('transferencia', _('Transferencia bancaria')),
+        ('tarjeta', _('Tarjeta de crédito/débito')),
+        ('otro', _('Otro')),
+    ]
+    metodo_pago = models.CharField(_('Método de pago'), max_length=20, choices=METODO_PAGO_CHOICES, default='efectivo')
 
     class Meta:
         verbose_name = _('Factura')

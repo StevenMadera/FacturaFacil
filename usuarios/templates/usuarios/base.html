@@ -1,86 +1,84 @@
+{% load static %}
 <!DOCTYPE html>
 <html lang="es">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Factura Fácil - {% block title %}{% endblock %}</title>
+    <link rel="icon" type="image/png" href="{% static 'img/logofacturafacil.png' %}">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
-    
+    {% block extra_css %}
+    <link rel="stylesheet" href="{% static 'css/styles_usuarios.css' %}">
+    {% endblock %}
 </head>
 <body>
-    
-
-<nav class="navbar navbar-expand-lg navbar-dark bg-primary shadow-sm">
-    <div class="container">
-        <a class="navbar-brand fw-bold" href="{% url 'usuarios:inicio' %}">
-            <i class="fas fa-file-invoice me-2"></i> Factura Fácil
-        </a>
-        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
-            <span class="navbar-toggler-icon"></span>
-        </button>
-        <div class="collapse navbar-collapse" id="navbarNav">
-            <ul class="navbar-nav me-auto">
-                {% if user.is_authenticated %}
-                    <li class="nav-item">
-                        <a class="nav-link" href="#">
-                            <i class="fas fa-home me-1"></i> Inicio
-                        </a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="#">
-                            <i class="fas fa-file-invoice me-1"></i> Facturas
-                        </a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="#">
-                            <i class="fas fa-users me-1"></i> Clientes
-                        </a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="#">
-                            <i class="fas fa-chart-line me-1"></i> Reportes
-                        </a>
-                    </li>
-                {% endif %}
-            </ul>
-            <ul class="navbar-nav ms-auto">
-                {% if user.is_authenticated %}
-                    <li class="nav-item dropdown">
-                        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown">
-                            <i class="fas fa-user-circle me-1"></i> {{ user.razon_social|truncatechars:20 }}
-                        </a>
-                        <ul class="dropdown-menu dropdown-menu-end">
-                            <li><a class="dropdown-item" href="{% url 'usuarios:perfil' %}">
-                                <i class="fas fa-user me-2"></i> Perfil
-                            </a></li>
-                            <li><a class="dropdown-item" href="#">
-                                <i class="fas fa-cog me-2"></i> Configuración
-                            </a></li>
-                            <li><hr class="dropdown-divider"></li>
-                            <li><a class="dropdown-item" href="{% url 'usuarios:logout' %}">
-                                <i class="fas fa-sign-out-alt me-2"></i> Cerrar Sesión
-                            </a></li>
-                        </ul>
-                    </li>
-                {% else %}
-                    <li class="nav-item">
-                        <a class="nav-link" href="{% url 'usuarios:login' %}">
-                            <i class="fas fa-sign-in-alt me-1"></i> Iniciar Sesión
-                        </a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="{% url 'usuarios:registro' %}">
-                            <i class="fas fa-user-plus me-1"></i> Registrarse
-                        </a>
-                    </li>
-                {% endif %}
-            </ul>
+    <nav class="navbar navbar-expand-lg navbar-dark  shadow-sm sticky-top">
+        <div class="container">
+            <a class="navbar-brand fw-bold" href="{% url 'usuarios:inicio' %}">
+                <i><img src="{% static 'img/logofacturafacil.png' %}" alt="Facturación electrónica" class="img-fluid logo "></i> Factura Fácil
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav me-auto">
+                    {% if user.is_authenticated %}
+                        <li class="nav-item">
+                            <a class="nav-link" href="/">
+                                <i class="fas fa-home me-1" style="color: #fff;"></i> Inicio
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="/facturacion/">
+                                <i class="fas fa-file-invoice me-1" style="color: #fff;"></i> Facturas
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="/productos/">
+                                <i class="fas fa-boxes me-1" style="color: #fff;"></i> Productos
+                            </a>
+                        </li>
+                        
+                    {% endif %}
+                </ul>
+                <ul class="navbar-nav ms-auto">
+                    {% if user.is_authenticated %}
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown">
+                                <i class="fas fa-user-circle me-1" style="color: #fff;"></i> {{ user.razon_social|truncatechars:20 }}
+                            </a>
+                            <ul class="dropdown-menu dropdown-menu-end">
+                                <li><a class="dropdown-item" href="{% url 'usuarios:perfil' %}">
+                                    <i class="fas fa-user me-2" ></i> Perfil
+                                </a></li>
+                                <li><a class="dropdown-item" href="#">
+                                    <i class="fas fa-cog me-2"></i> Configuración
+                                </a></li>
+                                <li><hr class="dropdown-divider"></li>
+                                <li><a class="dropdown-item" href="{% url 'usuarios:logout' %}">
+                                    <i class="fas fa-sign-out-alt me-2"></i> Cerrar Sesión
+                                </a></li>
+                            </ul>
+                        </li>
+                    {% else %}
+                        <li class="nav-item">
+                            <a class="nav-link" href="{% url 'usuarios:login' %}">
+                                <i class="fas fa-sign-in-alt me-1" style="color: #fff;"></i> Iniciar Sesión
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="{% url 'usuarios:registro' %}">
+                                <i class="fas fa-user-plus me-1" style="color: #fff;"></i> Registrarse
+                            </a>
+                        </li>
+                    {% endif %}
+                </ul>
+            </div>
         </div>
-    </div>
-</nav>
+    </nav>
 
-    <div class="container">
+    <div class="container my-4">
         {% if messages %}
             {% for message in messages %}
                 <div class="alert alert-{{ message.tags }} alert-dismissible fade show mt-3" role="alert">
@@ -95,11 +93,27 @@
 
     <footer class="footer">
         <div class="container text-center">
+            <div class="row">
+                <div class="col-md-4 mb-3 mb-md-0">
+                    <h5 class="mb-3">Factura Fácil</h5>
+                    <p class="mb-0">Solución integral para la facturación electrónica en tu negocio.</p>
+                </div>
+                <div class="col-md-4 mb-3 mb-md-0">
+                    <h5 class="mb-3">Contacto</h5>
+                    <p class="mb-1"><i class="fas fa-envelope me-2" style="color: #fff;"></i> info@facturafacil.com</p>
+                    <p class="mb-0"><i class="fas fa-phone me-2" style="color: #fff;"></i> +57 320 333 1756</p>
+                </div>
+                <div class="col-md-4">
+                    <h5 class="mb-3">Legal</h5>
+                    <p class="mb-1"><a href="#" class="text-white">Términos y condiciones</a></p>
+                    <p class="mb-0"><a href="#" class="text-white">Política de privacidad</a></p>
+                </div>
+            </div>
+            <hr class="my-4 bg-light opacity-25">
             <p class="mb-0">&copy; {% now "Y" %} Factura Fácil - Todos los derechos reservados</p>
         </div>
     </footer>
 
-   
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     {% block extra_js %}{% endblock %}
 </body>
