@@ -22,11 +22,7 @@ FacturaFacil es una aplicación web desarrollada en Django para la gestión de f
 3. **Instala las dependencias necesarias:**
 
    En Terminal:
-   pip install django
-   pip install django-crispy-forms
-   pip install crispy-bootstrap4
-   pip install weasyprint
-
+   pip install -r requirements.txt
 
 4. **Realizar las migraciones de la base de datos (De ser necesario):**
 
